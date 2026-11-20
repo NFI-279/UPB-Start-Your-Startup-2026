@@ -1,0 +1,11 @@
+<dialog id="leadDialog" class="leadDialog" aria-labelledby="leadTitle" aria-describedby="leadIntro">
+<div class="modalBar"><span class="logotype">Tech-Con</span><button type="button" class="modalClose" aria-label="Închide formularul">Închide</button></div>
+<h2 id="leadTitle">Vrei să-ți automatizezi firma și să economisești bani?</h2>
+<p id="leadIntro">Completează formularul și te vom contacta.</p>
+<form id="leadForm" autocomplete="off" novalidate>
+<div class="leadFields"><label>Firmă<input id="leadCompany" required maxlength="100" placeholder="Exemplu Industrie SRL"></label><label>Nume<input id="leadName" required maxlength="80" placeholder="Nume de exemplu"></label></div>
+<label>Adresă de e-mail<input id="leadEmail" type="email" required maxlength="160" placeholder="contact@exemplu.test"></label>
+<label>Ce ai vrea să automatizezi? <span>(opțional)</span><textarea id="leadMessage" rows="2" maxlength="700" placeholder="Descrie pe scurt linia ta."></textarea></label>
+<label class="checkLine"><input type="checkbox" id="leadAttach" checked> Include datele pre-evaluării</label>
+<p id="leadRoute"></p><p class="demoNote">Demonstrație cu date fictive. Poți descărca cererea sau o poți trimite din aplicația ta de e-mail.</p>
+<div class="modalActions"><button type="submit" class="solid">Pregătește e-mailul</button><button type="button" id="leadSave" class="glass">Descarcă cererea</button></div><p id="leadFeedback" aria-live="polite"></p></form></dialog>

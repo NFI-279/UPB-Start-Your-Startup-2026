@@ -1,0 +1,183 @@
+1 <!DOCTYPE html><html lang="ro"><head><meta charset="utf-8"><title>Pre-evaluare paletizare UR20</title>
+2 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+3 <style>
+4 :root{--bg:#f4f6f8;--card:#fff;--tx:#1c2228;--mu:#5d6770;--ln:#d9dfe5;--ac:#0a6fb8;--ok:#1b7f3b;--wa:#a86500;--bd:#b3261e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+5 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14181c;--card:#1d2328;--tx:#e8ecef;--mu:#9aa5ae;--ln:#2e373e;--ac:#5db4f0;--ok:#4cc474;--wa:#e8a33d;--bd:#ff7b72;color-scheme:dark}}
+6 *{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,Segoe UI,Roboto,sans-serif}
+7 header{padding:10px 14px}h1{font-size:18px;margin:0}header p{margin:2px 0 0;color:var(--mu);font-size:13px}
+8 main{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:12px;padding:0 12px 14px}
+9 @media(max-width:860px){main{grid-template-columns:1fr}}
+10 .card{background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:12px}
+11 #cv{position:relative;height:min(62vh,560px);min-height:300px;border-radius:10px;overflow:hidden;background:#e6ebf0;touch-action:none}
+12 #cv canvas{display:block;width:100%;height:100%}
+13 .tag{position:absolute;transform:translate(-50%,-100%);background:rgba(20,24,28,.82);color:#fff;font-size:12px;padding:2px 7px;border-radius:6px;white-space:nowrap;pointer-events:none}
+14 .tabs{display:flex;gap:6px;margin-bottom:10px}.tabs button{flex:1}
+15 button,select,input{font:inherit;color:var(--tx);background:var(--card);border:1px solid var(--ln);border-radius:8px;padding:7px 9px;min-height:38px}
+16 button{cursor:pointer}button.pr{background:var(--ac);border-color:var(--ac);color:#fff}button.on{outline:2px solid var(--ac)}
+17 label{display:block;font-size:13px;color:var(--mu);margin:8px 0 2px}input,select{width:100%}
+18 .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+19 .hide{display:none}.st{padding:8px 10px;border-radius:8px;font-weight:600;margin:10px 0 6px}
+20 .ok{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}.wa{background:color-mix(in srgb,var(--wa) 16%,transparent);color:var(--wa)}.bd{background:color-mix(in srgb,var(--bd) 16%,transparent);color:var(--bd)}
+21 ul{margin:4px 0;padding-left:18px}li{margin:3px 0}li.ok,li.wa,li.bd{background:none}.sm{font-size:12.5px;color:var(--mu)}pre{white-space:pre-wrap;background:var(--bg);padding:8px;border-radius:8px;font-size:12.5px}
+22 #hud{font-size:13px;margin-top:8px;line-height:1.6}
+23 </style></head><body>
+24 <header><h1>Pre-evaluare paletizare cu UR20</h1><p>Prototip demonstrativ · date fictive · celulă inspirată de aplicația Tech-Con la PURATOS</p></header>
+25 <main>
+26 <section><div id="cv"><div class="tag" id="tA"></div><div class="tag" id="tB"></div></div>
+27 <div class="card" style="margin-top:10px"><div class="btns" style="margin:0"><button id="bp" class="pr">⏸ Pauză</button><button data-s="1">×1</button><button data-s="5" class="on">×5</button><button data-s="20">×20</button><button id="br">↺ Reset</button></div>
+28 <label>Ciclu simulat al robotului (s/găleată) — ipoteză ilustrativă, nu garanție</label><input id="cyc" type="number" min="3" max="30" step="0.5" value="7.5">
+29 <div id="hud"></div>
+30 <p class="sm">Ilustrație schematică: robotul este modelul CAD UR20; gripperul, transportorul și paleții sunt simplificați. Animația folosește ritmul introdus de voi, nu rezultatele de test de la PURATOS. Schimbarea paletului și separatorul rămân manuale. Rotiți cu degetul/mouse-ul, zoom cu două degete/rotiță.</p></div></section>
+31 <section class="card"><div class="tabs"><button class="on" data-t="e">1 · Evaluare</button><button data-t="r">2 · Rezultat</button></div>
+32 <div id="te"><div class="row"><div><label>Greutate găleată (kg)</label><input id="kg" type="number" step="0.5"></div><div><label>Găleți pe palet</label><input id="cap" type="number" step="1"></div></div>
+33 <div class="row"><div><label>Material</label><select id="mat"><option value="p">Plastic</option><option value="m">Metal</option><option value="c">Carton</option><option value="o">Altul</option></select></div><div><label>Mâner</label><select id="han"><option value="y">Da</option><option value="n">Nu</option><option value="u">Nu știu</option></select></div></div>
+34 <div class="row"><div><label>Găleți/min pe linie</label><input id="rate" type="number" step="0.5"></div><div><label>Schimbare palet (min)</label><input id="chg" type="number" step="0.5"></div></div>
+35 <div class="row"><div><label>Palet</label><select id="pal"><option value="e">Europalet</option><option value="o">Altul</option></select></div><div><label>Schimburi/zi</label><select id="sh"><option>1</option><option selected>2</option><option>3</option></select></div></div>
+36 <label>Spațiu și acces</label><select id="spc"><option value="s">Suficient</option><option value="l">Limitat</option><option value="u">Necunoscut</option></select>
+37 <div class="btns"><button class="pr" id="go">Evaluează</button><button id="ex1">Exemplu normal</button><button id="ex2">Exemplu date greșite</button></div></div>
+38 <div id="tr" class="hide"></div></section></main>
+39 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+40 <script>
+41 const PARTS=[{"n": 32070, "b": "4ADYAKgEAADYALwEAADNAMQE4ADYAKgEAADNAMQEAADHAMcE ...
+42 
+43 const L1=.862,L2=.7287,S0=[0,.236],D=.254,J=[[0,0,0],[0,.236,0],[0,1.098,0],[0,1.827,0],[0,1.9,-.201],[0,1.986,-.201]];
+44 function ik(X,Y,Z){ // tool contact point (bucket top centre), tool pointing down
+45  const rad=Math.hypot(X,Z),xp=Math.sqrt(Math.max(rad*rad-.201*.201,0));
+46  const t1=Math.atan2(-.201,xp)-Math.atan2(Z,X);
+47  let Wx=xp+.159,Wy=Y+D,dx=Wx-S0[0],dy=Wy-S0[1],d=Math.hypot(dx,dy),clamp=false;
+48  if(d>L1+L2-.01){const k=(L1+L2-.01)/d;dx*=k;dy*=k;d=L1+L2-.01;clamp=true}
+49  const a=(L1*L1-L2*L2+d*d)/(2*d),h=Math.sqrt(Math.max(L1*L1-a*a,0)),ux=dx/d,uy=dy/d;
+50  let c1=[a*ux-h*uy,a*uy+h*ux],c2=[a*ux+h*uy,a*uy-h*ux],e=c1[1]>=c2[1]?c1:c2;
+51  const t2=Math.atan2(-e[0],e[1]),f2=Math.atan2(-(dx-e[0]),dy-e[1]);
+52  return {q:[t1,t2,f2-t2,Math.PI/2-f2,Math.PI/2,0],clamp};
+53 }
+54 function fk(q,pt){const ax=['y','z','z','z','y','z'];let p=pt.slice();
+55  for(let j=5;j>=0;j--){let v=[p[0]-J[j][0],p[1]-J[j][1],p[2]-J[j][2]],c=Math.cos(q[j]),s=Math.sin(q[j]);
+56   if(ax[j]=='y')v=[v[0]*c+v[2]*s,v[1],-v[0]*s+v[2]*c];else v=[v[0]*c-v[1]*s,v[0]*s+v[1]*c,v[2]];
+57   p=[v[0]+J[j][0],v[1]+J[j][1],v[2]+J[j][2]]}return p}
+58 
+59 const $=s=>document.querySelector(s),PED=.45,HC=.62,RP=.8,UP=.1,PX=1.0,TAU=Math.PI*2;
+60 /* ---------- evaluare ---------- */
+61 function evalIn(v){const e=[],c=[],add=(l,t)=>c.push([l,t]);
+62  if(!(v.kg>0&&v.kg<=60))e.push("Greutatea găleții lipsește sau e invalidă (0–60 kg).");
+63  if(!(v.rate>0&&v.rate<=200))e.push("Ritmul liniei lipsește sau e invalid (>0 și ≤200 găleți/min).");
+64  if(!(v.cap>=1&&v.cap<=500&&Number.isInteger(v.cap)))e.push("Numărul de găleți pe palet trebuie să fie întreg, între 1 și 500.");
+65  if(!(v.chg>=0&&v.chg<=60))e.push("Timpul de schimbare a paletului lipsește sau e invalid (0–60 min).");
+66  if(e.length)return{err:e};
+67  const w=v.kg;
+68  if(w>17)add("bd","Greutate "+w+" kg: sarcina totală include gripperul; peste ~17 kg e probabil nepotrivit (ipoteză: capacitate 20 kg și gripper ~3 kg — de verificat în fișa producătorului).");
+69  else if(w>13.5)add("wa","Greutate "+w+" kg: peste intervalul testat la PURATOS (5 și 13 kg). Verificați sarcina totală cu gripperul.");
+70  else if(w<4)add("wa","Greutate "+w+" kg: sub intervalul testat (5 și 13 kg); prinderea trebuie validată.");
+71  else add("ok","Greutate "+w+" kg: în intervalul aplicației de referință (5 și 13 kg).");
+72  add(v.mat=="p"?"ok":"wa",v.mat=="p"?"Material plastic, ca în aplicația de referință.":"Material diferit de plastic: stabilitatea și prinderea necesită validare.");
+73  add(v.han=="y"?"ok":"wa",v.han=="y"?"Mâner prezent: sistemul de vedere poate verifica orientarea acestuia.":"Mâner absent/necunoscut: strategia de prindere și vederea trebuie reproiectate sau confirmate.");
+74  const ref=w>=9?7.4:8.6;
+75  if(v.rate<=6)add("ok","Ritm "+v.rate+"/min: sub ținta de referință de 6/min.");
+76  else if(v.rate<=ref)add("wa","Ritm "+v.rate+"/min: peste ținta de 6/min, în apropierea testelor ("+ref+"/min la PURATOS, rezultat de test). Ciclul trebuie validat pe produsul vostru.");
+77  else if(v.rate<=2*ref)add("wa","Ritm "+v.rate+"/min: peste rezultatele de test; posibil două celule sau validare suplimentară.");
+78  else add("bd","Ritm "+v.rate+"/min: prea mare pentru o singură celulă în ipotezele actuale.");
+79  add(v.pal=="e"?"ok":"wa",v.pal=="e"?"Europalet, ca în referință.":"Palet diferit: modelul de paletizare trebuie reproiectat.");
+80  add(v.spc=="s"?"ok":"wa",v.spc=="s"?"Spațiu și acces declarate suficiente (de confirmat la vizită).":"Spațiu/acces limitat sau necunoscut: necesită evaluare la fața locului.");
+81  const tf=v.cap/v.rate;
+82  add(v.chg<=tf?"ok":"wa","Un palet se umple în ~"+tf.toFixed(1)+" min; schimbarea durează "+v.chg+" min. "+(v.chg<=tf?"Cu două poziții, operatorul are timp să schimbe paletul.":"Robotul va aștepta schimbarea manuală."));
+83  const b=c.some(x=>x[0]=="bd"),wa=c.some(x=>x[0]=="wa");
+84  return{c,st:b?["bd","Nepotrivit (preliminar)"]:wa?["wa","Necesită validare tehnică"]:["ok","Potrivit pentru o evaluare tehnică detaliată"]};}
+85 function val(){const g=i=>$(i).value;return{kg:parseFloat(g("#kg")),cap:g("#cap")===""?NaN:Number(g("#cap")),mat:g("#mat"),han:g("#han"),rate:parseFloat(g("#rate")),chg:g("#chg")===""?NaN:Number(g("#chg")),pal:g("#pal"),spc:g("#spc"),sh:g("#sh")}}
+86 function show(t){$("#te").classList.toggle("hide",t!="e");$("#tr").classList.toggle("hide",t!="r");document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.t==t))}
+87 document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>show(b.dataset.t));
+88 $("#kg").oninput=()=>{const w=parseFloat($("#kg").value);if(w==5)$("#cap").value=100;if(w==13)$("#cap").value=44};
+89 function setV(o){for(const k in o)$("#"+k).value=o[k]}
+90 $("#ex1").onclick=()=>setV({kg:13,cap:44,mat:"p",han:"y",rate:5,chg:2,pal:"e",sh:"2",spc:"s"});
+91 $("#ex2").onclick=()=>setV({kg:-3,cap:0,mat:"o",han:"u",rate:"",chg:2,pal:"o",sh:"3",spc:"u"});
+92 $("#go").onclick=()=>{const v=val(),r=evalIn(v),o=$("#tr");let h="";
+93  if(r.err){h='<div class="st bd">Date lipsă sau greșite — nu se poate calcula un status</div><ul>'+r.err.map(x=>"<li>"+x+"</li>").join("")+"</ul><p class=\"sm\">Corectați câmpurile și evaluați din nou.</p>"}
+94  else{h='<div class="st '+r.st[0]+'">'+r.st[1]+"</div><ul>"+r.c.map(x=>'<li class="'+x[0]+'">'+({ok:"✓ ",wa:"! ",bd:"✗ "}[x[0]])+x[1]+"</li>").join("")+"</ul>"+
+95  "<b>Date lipsă pentru o decizie</b><ul><li>Evaluarea riscurilor și interacțiunea cu oamenii</li><li>Cerințe de igienă și proceduri de operare</li><li>Integrarea transportorului și semnalele de proces</li><li>Forma, stabilitatea și mânerul găleții (probe)</li></ul>"+
+96  '<p class="sm"><b>Atenție:</b> viteza robotului nu este debitul fabricii. Verificați blocajele din amonte (umplere, transportor) și din aval (schimbarea paleților). Valorile PURATOS (7,4 și 8,6 găleți/min) sunt rezultate de test ale acelei aplicații, nu garanții. Statusul este orientativ, nu o ofertă.</p>'+
+97  '<div class="btns"><button class="pr" id="cta">Solicită evaluare tehnică / demo</button></div><div id="cs"></div>';applySim(v)}
+98  o.innerHTML=h;show("r");const c=$("#cta");if(c)c.onclick=()=>{$("#cs").innerHTML='<pre>Cerere simulată (date fictive)\nStatus preliminar: '+r.st[1]+"\nGăleată: "+v.kg+" kg, "+v.cap+"/palet\nRitm linie: "+v.rate+" găleți/min · schimburi: "+v.sh+"\nPas următor: evaluare tehnică și demonstrație cu Tech-Con.</pre><p class=\"sm\">Prototip: nu se trimite nimic și nu se introduc date personale reale.</p>"}};
+99 /* ---------- scena 3D ---------- */
+100 const cv=$("#cv"),R=new THREE.WebGLRenderer({antialias:true});R.setPixelRatio(Math.min(devicePixelRatio,2));cv.appendChild(R.domElement);
+101 const sc=new THREE.Scene();sc.background=new THREE.Color(0xe6ebf0);const cam=new THREE.PerspectiveCamera(40,1,.05,50);
+102 sc.add(new THREE.HemisphereLight(0xffffff,0x8a97a3,.95));const dl=new THREE.DirectionalLight(0xffffff,.9);dl.position.set(3,6,4);sc.add(dl);
+103 const M=(c,r=.6,m=.05)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m}),B=(w,h,d,m)=>new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);
+104 const fl=new THREE.Mesh(new THREE.PlaneGeometry(10,10),M(0xd5dce3,.95,0));fl.rotation.x=-Math.PI/2;sc.add(fl);
+105 const ring=new THREE.Mesh(new THREE.RingGeometry(2.0,2.06,64),new THREE.MeshBasicMaterial({color:0xe0a800,side:2}));ring.rotation.x=-Math.PI/2;ring.position.y=.005;sc.add(ring);
+106 const zone=new THREE.Mesh(new THREE.CircleGeometry(2.0,64),new THREE.MeshBasicMaterial({color:0xe0a800,transparent:true,opacity:.07,side:2}));zone.rotation.x=-Math.PI/2;zone.position.y=.004;sc.add(zone);
+107 const root=new THREE.Group();root.position.y=PED;sc.add(root);
+108 const ped=B(.5,PED,.5,M(0x7b838b,.6,.3));ped.position.y=PED/2;sc.add(ped);
+109 const G=[];let prev=root;for(let i=0;i<6;i++){const g=new THREE.Group();g.position.set(...J[i].map((v,k)=>v-(i?J[i-1][k]:0)));prev.add(g);G.push(g);prev=g}
+110 G[4].position.y=J[4][1]-J[3][1];
+111 function dec(p,i){const bin=atob(p.b),u=new Uint8Array(bin.length);for(let k=0;k<u.length;k++)u[k]=bin.charCodeAt(k);const n=p.n;
+112  const pos=new Int16Array(u.buffer.slice(0,n*6)),nr=new Int8Array(u.buffer.slice(n*6,n*9)),col=new Uint8Array(n*3);
+113  const sites={1:[[0,.236]],2:[[0,.236],[0,1.098]],3:[[0,1.098],[0,1.827]],4:[[0,1.827]]}[i]||[],base={0:[170,177,184],7:[58,61,64]}[i]||[88,94,101],tube=i==2||i==3?[196,201,206]:null;
+114  const zs=[];for(let k=0;k<n;k++){const x=pos[3*k]*1e-4,y=pos[3*k+1]*1e-4,z=pos[3*k+2]*1e-4;let c=base,d=9;
+115   for(const s of sites)d=Math.min(d,Math.hypot(x-s[0],y-s[1]));
+116   if(tube&&d>.1)c=tube;zs.push(d);col[3*k]=c[0];col[3*k+1]=c[1];col[3*k+2]=c[2]}
+117  sites.forEach((s,si)=>{let lo=9,hi=-9;const idx=[];for(let k=0;k<n;k++){const nz=Math.abs(nr[3*k+2])/127;if(nz>.97&&Math.hypot(pos[3*k]*1e-4-s[0],pos[3*k+1]*1e-4-s[1])<.085){idx.push(k);const z=pos[3*k+2]*1e-4;lo=Math.min(lo,z);hi=Math.max(hi,z)}}
+118   idx.forEach(k=>{const z=pos[3*k+2]*1e-4;if(z<lo+.006||z>hi-.006){col[3*k]=120;col[3*k+1]=190;col[3*k+2]=235}})});
+119  const g=new THREE.BufferGeometry();g.setAttribute("position",new THREE.BufferAttribute(pos,3));g.setAttribute("normal",new THREE.BufferAttribute(nr,3,true));g.setAttribute("color",new THREE.BufferAttribute(col,3,true));return g}
+120 const mm=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.4,metalness:.35});
+121 PARTS.forEach((p,i)=>{const m=new THREE.Mesh(dec(p,i),mm);m.scale.setScalar(1e-4);
+122  const gi=i==0||i==7?root:G[i-1],pv=i==0||i==7?[0,0,0]:J[i-1];m.position.set(-pv[0],-pv[1],-pv[2]);gi.add(m)});
+123 const gm=M(0x30343a,.5,.3);const plate=B(.16,.03,.16,gm);plate.position.set(0,0,-.37);const f1=B(.03,.03,.09,gm),f2=f1.clone();f1.position.set(.09,0,-.43);f2.position.set(-.09,0,-.43);
+124 [plate,f1,f2].forEach(o=>{o.position.set(o.position.x-J[5][0],o.position.y+0,o.position.z-J[5][2]);G[5].add(o)});
+125 plate.position.y=0;f1.position.y=0;f2.position.y=0;
+126 /* transportor + paleti */
+127 const belt=B(2.5,.06,.5,M(0x3b4148,.8,0));belt.position.set(2.1,HC-.03,0);sc.add(belt);
+128 [[.9,.2],[3.3,.2],[.9,-.2],[3.3,-.2]].forEach(l=>{const o=B(.05,HC-.06,.05,M(0x8b949c,.5,.4));o.position.set(l[0],(HC-.06)/2,l[1]);sc.add(o)});
+129 [.22,-.22].forEach(z=>{const r=B(2.5,.08,.03,M(0x8b949c,.4,.4));r.position.set(2.1,HC+.01,z*1.2);sc.add(r)});
+130 const stop=B(.03,.1,.5,M(0xe0a800,.5,0));stop.position.set(.9,HC+.05,0);sc.add(stop);
+131 const PAL=[125,235].map((a,i)=>{const A=a*Math.PI/180,g=new THREE.Group();g.position.set(RP*Math.cos(A),0,RP*Math.sin(A));g.rotation.y=Math.atan2(-Math.cos(A),-Math.sin(A));
+132  const p=B(1.2,.144,.8,M(0xb98a52,.9,0));p.position.y=.072;g.add(p);sc.add(g);return{g,n:0,st:0,tm:0,bk:[],tag:$(i?"#tB":"#tA"),name:i?"B":"A"}});
+133 /* simulare */
+134 const S={kg:13,cap:44,rate:5,chg:2},bkSt=()=>S.kg<9?{r:.1,h:.21,pl:20,nx:5,nz:4,dx:.22,dz:.2,c:0xf3efe2}:{r:.13,h:.27,pl:11,nx:4,nz:3,dx:.3,dz:.26,c:0xe9dcc0};
+135 let Q=[],sim=0,spd=5,run=true,spT=0,cur=0,done=0,full=false,hold=null,rb=null,boxK=null;
+136 const lidM=M(0x2f6fb3,.6,0);
+137 function mkBucket(){const k=bkSt(),b=new THREE.Mesh(new THREE.CylinderGeometry(k.r*1.05,k.r,k.h,28),[M(k.c,.7,0),lidM,M(k.c,.7,0)]);b.userData.k=k;return b}
+138 function slot(p,n){const k=bkSt(),L=Math.floor(n/k.pl),i=n%k.pl;return new THREE.Vector3((i%k.nx-(k.nx-1)/2)*k.dx,.144+L*k.h+k.h/2,(Math.floor(i/k.nx)-(k.nz-1)/2)*k.dz)}
+139 function pose(q){q.forEach((a,i)=>{G[i].rotation[i==0||i==4?"y":"z"]=a})}
+140 const lerpQ=(a,b,t)=>a.map((v,i)=>v+(b[i]-v)*t),ease=t=>t*t*(3-2*t);
+141 function tgt(X,Y,Z){return ik(X,Y-PED,Z).q}
+142 function applySim(v){S.kg=v.kg;S.cap=v.cap;S.rate=v.rate;S.chg=v.chg;resetSim()}
+143 function resetSim(){Q.forEach(b=>b.parent&&b.parent.remove(b));PAL.forEach(p=>{p.bk.forEach(b=>p.g.remove(b));p.bk=[];p.n=0;p.st=0});if(hold){hold.parent&&hold.parent.remove(hold)}hold=null;Q=[];sim=0;spT=0;cur=0;done=0;full=false;rb=null;
+144  const k=bkSt();pose(tgt(PX,HC+k.h+UP,0));home=tgt(PX,HC+k.h+UP,0)}
+145 let home=null;
+146 function startCycle(){const k=bkSt();let p=PAL[cur];if(p.st){p=PAL[1-cur];if(p.st)return;cur=1-cur}
+147  p.g.updateMatrixWorld(true);const s=slot(p,p.n),w=p.g.localToWorld(s.clone()),top=w.y+k.h/2,pk=HC+k.h;
+148  const ap=tgt(PX,pk+UP,0),pp=tgt(PX,pk,0),ab=tgt(w.x,top+UP,w.z),pl=tgt(w.x,top,w.z);
+149  rb={p,s,i:0,t:0,seg:[[ap,.12],[pp,.12,"g"],[ap,.1],[ab,.26],[pl,.12,"r"],[ab,.08],[ap,.2]],from:home}}
+150 const tc=()=>Math.max(3,parseFloat($("#cyc").value)||7.5);
+151 function step(dt){sim+=dt;const k=bkSt(),gap=2*k.r+.06;
+152  spT+=dt;if(spT>=60/S.rate){const last=Q[Q.length-1];if(!last||last.position.x<3.2-gap){const b=mkBucket();b.position.set(3.2,HC+k.h/2,0);sc.add(b);Q.push(b);spT-=60/S.rate;full=false}else{spT=60/S.rate;full=true}}
+153  Q.forEach((b,i)=>{const lim=i?Q[i-1].position.x+gap:PX;b.position.x=Math.max(lim,b.position.x-.3*dt)});
+154  PAL.forEach(p=>{if(p.st){p.tm-=dt;if(p.tm<=0){p.bk.forEach(b=>p.g.remove(b));p.bk=[];p.n=0;p.st=0}}});
+155  if(!rb){if(Q.length&&Q[0].position.x<=PX+.01&&!hold)startCycle()}
+156  if(rb){const sg=rb.seg[rb.i];rb.t+=dt/(tc()*sg[1]);const t=Math.min(rb.t,1);pose(lerpQ(rb.from,sg[0],ease(t)));
+157   if(rb.t>=1){home=sg[0];rb.from=sg[0];
+158    if(sg[2]=="g"){hold=Q.shift();G[5].attach(hold)}
+159    if(sg[2]=="r"){const p=rb.p;p.g.attach(hold);hold.position.copy(rb.s);hold.rotation.set(0,0,0);p.bk.push(hold);hold=null;p.n++;done++;if(p.n>=S.cap){p.st=1;p.tm=S.chg*60}}
+160    rb.i++;rb.t=0;if(rb.i>=rb.seg.length)rb=null}}}
+161 /* camera */
+162 let az=.9,el=.95,dist=5.3;const tg=new THREE.Vector3(0,.8,0);
+163 function cm(){cam.position.set(tg.x+dist*Math.sin(el)*Math.sin(az),tg.y+dist*Math.cos(el),tg.z+dist*Math.sin(el)*Math.cos(az));cam.lookAt(tg)}
+164 const ptr=new Map();let pd=0;
+165 cv.addEventListener("pointerdown",e=>{cv.setPointerCapture(e.pointerId);ptr.set(e.pointerId,[e.clientX,e.clientY]);pd=0});
+166 cv.addEventListener("pointerup",e=>ptr.delete(e.pointerId));cv.addEventListener("pointercancel",e=>ptr.delete(e.pointerId));
+167 cv.addEventListener("pointermove",e=>{if(!ptr.has(e.pointerId))return;const o=ptr.get(e.pointerId);
+168  if(ptr.size==1){az-=(e.clientX-o[0])*.006;el=Math.min(1.5,Math.max(.25,el-(e.clientY-o[1])*.006))}
+169  else{const a=[...ptr.values()],ot=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]);ptr.set(e.pointerId,[e.clientX,e.clientY]);const b=[...ptr.values()],nt=Math.hypot(b[0][0]-b[1][0],b[0][1]-b[1][1]);dist=Math.min(9,Math.max(2.5,dist*ot/Math.max(nt,1)))}
+170  ptr.set(e.pointerId,[e.clientX,e.clientY])});
+171 cv.addEventListener("wheel",e=>{e.preventDefault();dist=Math.min(9,Math.max(2.5,dist*(1+e.deltaY*.001)))},{passive:false});
+172 function rs(){const w=cv.clientWidth,h=cv.clientHeight;R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}addEventListener("resize",rs);
+173 /* UI */
+174 $("#bp").onclick=()=>{run=!run;$("#bp").textContent=run?"⏸ Pauză":"▶ Pornește"};
+175 document.querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>{spd=+b.dataset.s;document.querySelectorAll("[data-s]").forEach(x=>x.classList.toggle("on",x==b))});
+176 $("#br").onclick=resetSim;
+177 function lab(p){const v=new THREE.Vector3(0,1.6,0);p.g.localToWorld(v);v.project(cam);p.tag.style.left=(v.x*.5+.5)*cv.clientWidth+"px";p.tag.style.top=(-v.y*.5+.5)*cv.clientHeight+"px";
+178  p.tag.textContent=p.st?"Palet "+p.name+": schimb manual (operator + separator)":"Palet "+p.name+": "+p.n+"/"+S.cap}
+179 function hud(){const m=sim>0?(done/(sim/60)).toFixed(1):"–";$("#hud").innerHTML="Ritm linie (intrare): <b>"+S.rate+"</b> găleți/min · Coadă la transportor: <b>"+Q.length+"</b>"+(full?" <b style=\"color:var(--bd)\">(coadă plină: robotul nu ține pasul)</b>":"")+"<br>Găleți paletizate în simulare: <b>"+done+"</b> · Ritm măsurat în simulare: <b>"+m+"</b>/min<br>Poziții: A "+PAL[0].n+"/"+S.cap+" · B "+PAL[1].n+"/"+S.cap+" · Timp simulat: "+Math.floor(sim/60)+" min"}
+180 let last=performance.now(),hc=0;
+181 function loop(t){requestAnimationFrame(loop);const dt=Math.min((t-last)/1000,.1);last=t;if(run)step(dt*spd);cm();R.render(sc,cam);PAL.forEach(lab);if(++hc%6==0)hud()}
+182 $("#ex1").click();resetSim();rs();requestAnimationFrame(loop);
+183 </script></body></html>
